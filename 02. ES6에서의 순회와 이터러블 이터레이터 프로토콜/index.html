@@ -1,0 +1,73 @@
+<script>const log = console.log;</script>
+
+## 기존과 달라진 ES6에서의 리스트 순회
+- for i++
+- for of
+
+<script>
+    const list = [1, 2, 3];
+    for(var i = 0; i < list.length; i++){
+        log(list[i])
+    }
+
+    const str = 'abc';
+    for(var i = 0; i < str.length; i++){
+        log(list[i])
+    }
+
+    for(const a of list){
+        log(a)
+    }
+
+    for(const a of str){
+        log(a)
+    }
+</script>
+
+## Array를 통해 알아보기
+<script>    
+    log('Array -----------');
+    const arr = [1, 2, 3];
+    log('arr', arr)  // (3) [1, 2, 3]
+    for(const a of arr) log(a);
+    log(arr[0]);  // 1
+    log(arr[1]);  // 2
+    log(arr[2]);  // 3
+</script>
+
+## Set를 통해 알아보기
+<script>
+    log('Set -----------');
+    const set = new Set([1, 2, 3]);
+    log('set', set)  // Set(3) {1, 2, 3}
+    for(const a of set) log(a);
+    log(set[0]);  // undefined
+    log(set[1]);  // undefined
+    log(set[2]);  // undefined
+</script>
+
+## Map를 통해 알아보기
+<script>
+    log('Map -----------');
+    const map = new Map([['a', 1], ['b', 2], ['c', 3]]);
+    log('map', map);  // Map(3) {'a' => 1, 'b' => 2, 'c' => 3}
+    for(const a of map) log(a);
+    for(const a of map.keys()) log(a);
+    for(const a of map.values()) log(a);
+    for(const a of map.entries()) log(a);
+    log(map[0]);  // undefined
+    log(map[1]);  // undefined
+    log(map[2]);  // undefined
+</script>
+
+## 이터러블/이터레이터 프로토콜
+- 이터러블: 이터레이터를 리턴하는 [Symbol.iterator]() 를 가진 값
+- 이터레이터: { value, done } 객체를 리턴하는 next() 를 가진 값
+<script>
+    log('이터레이터 -----------');
+    let iterator = arr[Symbol.iterator]();
+    log(iterator.next());  // {value: 1, done: false}
+    log(iterator.next());  // {value: 2, done: false}
+    log(iterator.next());  // {value: 3, done: false}
+</script>
+- 이터러블/이터레이터 프로토콜: 이터러블을 for...of, 전개 연산자 등과 함께 동작하도록한 규약
