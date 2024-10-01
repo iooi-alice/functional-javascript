@@ -26,7 +26,7 @@
 
 ## Array를 통해 알아보기
 <script>    
-    log('Array -----------');
+    log('Array ----------------------');
     const arr = [1, 2, 3];
     log('arr', arr)  // (3) [1, 2, 3]
     for(const a of arr) log(a);
@@ -37,7 +37,7 @@
 
 ## Set를 통해 알아보기
 <script>
-    log('Set -----------');
+    log('Set ----------------------');
     const set = new Set([1, 2, 3]);
     log('set', set)  // Set(3) {1, 2, 3}
     for(const a of set) log(a);
@@ -48,7 +48,7 @@
 
 ## Map를 통해 알아보기
 <script>
-    log('Map -----------');
+    log('Map ----------------------');
     const map = new Map([['a', 1], ['b', 2], ['c', 3]]);
     log('map', map);  // Map(3) {'a' => 1, 'b' => 2, 'c' => 3}
     for(const a of map) log(a);
@@ -64,10 +64,53 @@
 - 이터러블: 이터레이터를 리턴하는 [Symbol.iterator]() 를 가진 값
 - 이터레이터: { value, done } 객체를 리턴하는 next() 를 가진 값
 <script>
-    log('이터레이터 -----------');
+    log('이터레이터 ----------------------');
     let iterator = arr[Symbol.iterator]();
     log(iterator.next());  // {value: 1, done: false}
     log(iterator.next());  // {value: 2, done: false}
     log(iterator.next());  // {value: 3, done: false}
 </script>
 - 이터러블/이터레이터 프로토콜: 이터러블을 for...of, 전개 연산자 등과 함께 동작하도록한 규약
+
+## 사용자 정의 이터러블을 통해 알아보기
+<script>
+    log('사용자 정의 이터러블 ----------------------');
+    const iterable = {
+        [Symbol.iterator](){
+            let i = 3;
+            return {
+                next(){
+                    return i == 0 ? {done: true} : { value: i--, done: false };
+                },
+                [Symbol.iterator]() { return this }
+            }
+        }
+    };
+    let iterator1 = iterable[Symbol.iterator]();
+    log(iterator1.next());  // {value: 3, done: false}
+    log(iterator1.next());  // {value: 2, done: false}
+    log(iterator1.next());  // {value: 1, done: false}
+    log(iterator1.next());  // {done: true}
+    for(const a of iterable) log(a);
+
+    const arr2 = [1, 2, 3];
+    let iter2 = arr2[Symbol.iterator]();
+    iter2.next();
+    for(const a of iter2) log('iter2', a);
+
+    for(const a of document.querySelectorAll('*')) log(a);
+    const all = document.querySelectorAll('*');
+    log('all', all);
+    let iter3 = all[Symbol.iterator]();
+    log(iter3.next());
+    log(iter3.next());
+    log(iter3.next());
+</script>
+
+## 전개 연산자
+
+<script>
+    console.clear();
+    const a = [1, 2];
+    log([...a, ...arr, ...set, ...map.keys()])
+</script>
